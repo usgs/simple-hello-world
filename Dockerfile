@@ -28,4 +28,5 @@ ENV ssl_keyfile ${ssl_keyfile}
 ENV ssl_certfile ${ssl_certfile}
 ENV log_level INFO
 EXPOSE ${bind_port}
+HEALTHCHECK CMD curl -k http://127.0.0.1/${listening_port}/hi/hello-world | grep -q "\"greeting\" : \"Hi!\"" || exit 1
 CMD ["docker-entrypoint.sh"]
