@@ -17,7 +17,7 @@ RUN apk add --update \
 RUN update-ca-certificates
 COPY gunicorn_config.py /local/gunicorn_config.py
 COPY requirements.txt /requirements.txt
-COPY my_app /application
+COPY hello /application
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
     pip3 install --upgrade pip && \
