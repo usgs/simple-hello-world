@@ -1,12 +1,14 @@
 FROM alpine:3.8
 MAINTAINER Andrew Yan "ayan@usgs.gov"
-ARG artifact_version
+
+ENV USER=python
+ENV HOME=/home/$USER
+ENV PATH="$PATH:$HOME/.local/bin"
+
 ARG ssl_keyfile
 ARG ssl_certfile
-ARG build_type
-ARG listening_port=9050
-RUN apk update && apk upgrade && mkdir /local
-RUN apk add --update \
+RUN apk update && apk upgrade
+RUN apk add --update --no-cache \
   python3 \
   python3-dev \
   build-base \
@@ -14,19 +16,27 @@ RUN apk add --update \
   curl \
   openssl \
   bash
-RUN update-ca-certificates
-COPY gunicorn_config.py /local/gunicorn_config.py
-COPY requirements.txt /requirements.txt
-COPY hello /application
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
-    pip3 install --upgrade pip && \
-    pip3 install -r /requirements.txt
+RUN pip3 install --upgrade pip
+RUN adduser --disabled-password -u 1000 $USER
+WORKDIR $HOME
+
+RUN mkdir $HOME/local
+COPY gunicorn_config.py local/gunicorn_config.py
+COPY requirements.txt requirements.txt
+COPY hello application
+COPY docker-entrypoint.sh docker-entrypoint.sh
+
+RUN [ "chmod", "+x", "docker-entrypoint.sh" ]
+RUN chown $USER:$USER docker-entrypoint.sh local/gunicorn_config.py
+RUN chown -R $USER:$USER $HOME
+USER $USER
+RUN pip3 install --user -r requirements.txt
 ENV bind_ip 0.0.0.0
-ENV bind_port ${listening_port}
+ENV bind_port 9050
 ENV ssl_keyfile ${ssl_keyfile}
 ENV ssl_certfile ${ssl_certfile}
 ENV log_level INFO
 EXPOSE ${bind_port}
-HEALTHCHECK CMD curl -k http://127.0.0.1/${listening_port}/hi/hello-world || exit 1
-CMD ["docker-entrypoint.sh"]
+
+HEALTHCHECK CMD curl --fail http://127.0.0.1:${bind_port}/hi/hello-world || exit 1
+CMD ["./docker-entrypoint.sh"]
