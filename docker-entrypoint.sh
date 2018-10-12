@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/gunicorn --chdir / --reload application.app --config file:/local/gunicorn_config.py
+gunicorn --reload application.app --config file:$HOME/local/gunicorn_config.py
