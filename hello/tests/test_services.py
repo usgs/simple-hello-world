@@ -4,7 +4,7 @@ Unit tests for services
 """
 from falcon import testing
 
-from hello.app import api
+from ..app import api
 
 
 class TestHelloWorldService(testing.TestCase):
