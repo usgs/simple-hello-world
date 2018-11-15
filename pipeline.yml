@@ -1,1 +1,4 @@
 pipelineType: "secondary"
+projectName: "simple-hello-world"
+applicationName: "simple-hello-world"
+containerPort: 9050
