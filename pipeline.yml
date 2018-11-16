@@ -1,0 +1,7 @@
+projectName: "simple-hello-world"
+applicationName: "simple-hello-world"
+dockerImageName: "simple-hello-world-service"
+containerPort: 9050
+artifactoryPath: "simple-hello-world"
+gitlabPath: "wma/eb/simple-hello-world"
+repoPath: "usgs/simple-hello-world"
