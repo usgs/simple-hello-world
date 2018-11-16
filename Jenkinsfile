@@ -1,3 +1,3 @@
 @Library('dockerBuildLibrary') _
 
-testPipeline()
+dockerPipeline()
