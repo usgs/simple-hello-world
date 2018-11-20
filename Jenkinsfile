@@ -1,3 +1,0 @@
-@Library('dockerBuildLibrary') _
-
-dockerPipeline()
