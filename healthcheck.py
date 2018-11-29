@@ -1,3 +1,8 @@
+"""
+Simple healthcheck to be used by Docker
+to verify that the application is working.
+
+"""
 import sys
 from urllib import request
 
