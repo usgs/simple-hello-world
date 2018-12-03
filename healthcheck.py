@@ -1,5 +1,5 @@
 """
-Simple healthcheck to be used by Docker
+Simple health-check to be used by Docker
 to verify that the application is working.
 
 """
