@@ -1,4 +1,4 @@
-@Library('dockerCI@0.1.1') _
+@Library('dockerCI@0.3.0') _
 
 pipeline {
     agent {
@@ -8,6 +8,9 @@ pipeline {
     }
     parameters {
         choice(choices: ['snapshots', 'releases'], description: 'type of build', name: 'BUILD_TYPE')
+    }
+    triggers {
+        pollSCM('H/5 * * * *')
     }
     stages {
         stage('build artifact') {
